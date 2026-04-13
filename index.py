@@ -54,3 +54,14 @@ def encrypt(filename,key):
         encrypted_data = f.encrypt(file_data)
     with open(filename,"wb") as file:
         file.write(encrypted_data)
+def decrypt(filename,key):
+    f = Fernet(key)
+    with open(filename,"rb") as file:
+        encrypted_data =  file.read()
+        try:
+            decrypted_data = f.decrypt(encrypted_data)
+        except cryptography.fernet.InvalidToken:
+            print("[+] Token invalido")
+            return
+    with open(filename,"wb") as file:
+        file.write(decrypted_data)
