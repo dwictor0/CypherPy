@@ -55,6 +55,11 @@ def encrypt(filename,key):
     with open(filename,"wb") as file:
         file.write(encrypted_data)
 def decrypt(filename,key):
+    """_summary_
+    Args:
+        filename (_type_): _description_
+        key (_type_): _description_
+    """
     f = Fernet(key)
     with open(filename,"rb") as file:
         encrypted_data =  file.read()
@@ -66,6 +71,11 @@ def decrypt(filename,key):
     with open(filename,"wb") as file:
         file.write(decrypted_data)
 def encrypt_folder(foldername,key):
+    """_summary_
+    Args:
+        foldername (_type_): _description_
+        key (_type_): _description_
+    """
     for child in pathlib.Path(foldername).glob("*"):
         if child.is_file():
             print(f"[++] Criptografando...{child}")
