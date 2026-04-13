@@ -23,3 +23,22 @@ def load_salt():
         _type_: _description_
     """
     return open("salt.salt","rb").read()
+def generate_key(password,salt_size=16,load_existing_salt=False,save_salt=True):
+    """_summary_
+    Args:
+        password (_type_): _description_
+        salt_size (int, optional): _description_. Defaults to 16.
+        load_existing_salt (bool, optional): _description_. Defaults to False.
+        save_salt (bool, optional): _description_. Defaults to True.
+
+    Returns:
+        _type_: _description_
+    """
+    if load_existing_salt:
+        salt = load_salt()
+    elif save_salt:
+        salt = make_salt(salt_size)
+        with open("salt.salt","wb") as salt_file:
+            salt_file.write(salt)
+            derived_key = derive_key(salt,password)
+    return base64.urlsafe_b64encode(derived_key)
