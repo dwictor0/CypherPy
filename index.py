@@ -42,3 +42,15 @@ def generate_key(password,salt_size=16,load_existing_salt=False,save_salt=True):
             salt_file.write(salt)
             derived_key = derive_key(salt,password)
     return base64.urlsafe_b64encode(derived_key)
+def encrypt(filename,key):
+    """_summary_
+    Args:
+        filename (_type_): _description_
+        key (_type_): _description_
+    """
+    f = Fernet(key)
+    with open(filename,"rb") as file:
+        file_data = file.read()
+        encrypted_data = f.encrypt(file_data)
+    with open(filename,"wb") as file:
+        file.write(encrypted_data)
