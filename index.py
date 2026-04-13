@@ -82,3 +82,15 @@ def encrypt_folder(foldername,key):
             encrypt(child,key)
         elif child.is_dir():
             encrypt_folder(child,key)
+def decrypt_folder(foldername,key):
+    """_summary_
+    Args:
+        foldername (_type_): _description_
+        key (_type_): _description_
+    """
+    for child in pathlib.Path(foldername).glob("*"):
+        if child.is_file():
+            print(f"[++] Descriptografando...{child}")
+            decrypt(child,key)
+        elif child.is_dir():
+            decrypt_folder(child,key)
