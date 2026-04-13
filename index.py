@@ -17,3 +17,9 @@ def derive_key(salt,password):
     """
     kdf = Scrypt(salt=salt,length=32,n = 2 ** 14,r = 8,p=1)
     return kdf.derive(password.encode())
+def load_salt():
+    """_summary_
+    Returns:
+        _type_: _description_
+    """
+    return open("salt.salt","rb").read()
