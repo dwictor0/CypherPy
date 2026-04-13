@@ -34,7 +34,7 @@ source venv/bin/activate
 ```
 Windows:
 ```bash
-python -m venv venv
+python3 -m venv venv
 venv\Scripts\activate
 ```
 3. Instalar dependencias:
@@ -44,17 +44,17 @@ pip install -r requirements.txt
 4. Criptografar arquivo:
 Na primeira execução, você deve gerar o salt manualmente usando -s:
 ```bash
-python index.py file -e -s 16
+python3 index.py file -e -s 16
 ```
 5. Descriptografar arquivo:
 ```bash
-python index.py file -d
+python3 index.py file -d
 ```
 6. Criptografar diretorio:
 ```bash
-python index.py /folder -e
+python3 index.py /folder -e
 ```
 7. Descriptografar diretorio:
 ```bash
-python index.py /folder -d
+python3 index.py /folder -d
 ```
