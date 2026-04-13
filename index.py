@@ -22,7 +22,13 @@ def load_salt():
     Returns:
         _type_: _description_
     """
-    return open("salt.salt","rb").read()
+    try:
+        return open("salt.salt", "rb").read()
+    except FileNotFoundError:
+        salt = make_salt()
+        with open("salt.salt", "wb") as f:
+            f.write(salt)
+        return salt
 def generate_key(password,salt_size=16,load_existing_salt=False,save_salt=True):
     """_summary_
     Args:
@@ -36,11 +42,12 @@ def generate_key(password,salt_size=16,load_existing_salt=False,save_salt=True):
     """
     if load_existing_salt:
         salt = load_salt()
-    elif save_salt:
+    else:
         salt = make_salt(salt_size)
-        with open("salt.salt","wb") as salt_file:
-            salt_file.write(salt)
-            derived_key = derive_key(salt,password)
+        if save_salt:
+            with open("salt.salt", "wb") as salt_file:
+                salt_file.write(salt)
+    derived_key = derive_key(salt, password)
     return base64.urlsafe_b64encode(derived_key)
 def encrypt(filename,key):
     """_summary_
@@ -115,7 +122,7 @@ if __name__ == "__main__":
     if encrypt_ and decrypt_:
         raise TypeError("Especifique o processo desejado -e ou -d(criptografia/descriptografia)")
     elif encrypt_:
-        if os.patah.isfile(args.path):
+        if os.path.isfile(args.path):
             encrypt(args.path,key)
         elif os.path.isdir(args.path):
             encrypt_folder(args.path,key)
