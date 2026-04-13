@@ -94,3 +94,36 @@ def decrypt_folder(foldername,key):
             decrypt(child,key)
         elif child.is_dir():
             decrypt_folder(child,key)
+if __name__ == "__main__":
+    import argparse 
+    parser = argparse.ArgumentParser(description="Script para criptografia de arquivos/diretorios.")
+    parser.add_argument("path",help="Caminho para criptografia/descriptografia (arquivo/diretorio).")
+    parser.add_argument("-s","--salt-size",help="Caso essa flag seja utilizada, um novo salto sera gerado.",type=int)
+    parser.add_argument("-e","--encrypt",action="store_true",help="Para criptografar ou descriptografar utilize apenas -e ou -d")
+    parser.add_argument("-d","--decrypt",action="store_true",help="Para descriptografar (arquivo/diretorio) utilize apenas -e ou -d")
+    args = parser.parse_args()
+    if args.encrypt:
+        password = getpass.getpass("Informe a senha para criptografia: ")
+    elif args.decrypt:
+        password = getpass.getpass("Informe a senha utilizada no processo de criptografia.")
+    if args.salt_size:
+        key = generate_key(password,salt_size=args.salt_size,save_salt=True)
+    else:
+        key = generate_key(password,load_existing_salt=True)
+        encrypt_ = args.encrypt
+        decrypt_ = args.decrypt
+    if encrypt_ and decrypt_:
+        raise TypeError("Especifique o processo desejado -e ou -d(criptografia/descriptografia)")
+    elif encrypt_:
+        if os.patah.isfile(args.path):
+            encrypt(args.path,key)
+        elif os.path.isdir(args.path):
+            encrypt_folder(args.path,key)
+        elif decrypt_:
+            if os.path.isfile(args.path):
+                decrypt(args.path,key)
+            elif os.path.isdir(args.path):
+                decrypt_folder(args.path,key)
+            else: 
+                raise TypeError("Especifique o que sera criptografado ou descriptografado (arquivo/diretorio)")            
+    
